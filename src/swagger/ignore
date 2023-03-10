@@ -1,0 +1,12 @@
+# Stop swagger from generating the project related files. We just want the api
+# and model files.
+
+**/SwaggerDocumentationConfig.java
+**/OpenAPIUiConfiguration.java
+**/OpenApiGeneratorApplication.java
+**/WebApplication.java
+**/README.md
+**/pom.xml
+**/WebMvcConfiguration.java
+**/HomeController.java
+**/swagger.properties
