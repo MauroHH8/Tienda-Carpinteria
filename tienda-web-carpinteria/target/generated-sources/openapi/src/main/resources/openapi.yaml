@@ -1,0 +1,1451 @@
+openapi: 3.0.3
+info:
+  contact:
+    email: desarrolloweb@tiendaweb.com
+  description: Tienda web de carpinteria
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: https://www.tiendaweb.com.ar
+  title: Tienda de Carpinteria - OpenAPI 3.0
+  version: 1.0.0
+externalDocs:
+  description: Find out more about Tienda Web
+  url: https://www.tiendaweb.com.ar
+servers:
+- url: https://localhost:8080/api/v1
+security:
+- bearerAuth: []
+tags:
+- description: Everything about backoffice endpoints
+  name: backoffice
+- description: Access to the store
+  name: store
+- description: Operations about user
+  name: user
+- description: Operations about login
+  name: login
+paths:
+  /users/add-user:
+    post:
+      description: "Create a user, authentication required."
+      operationId: createUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRequestDTO'
+        description: Created user object
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseContainerResponseDTO'
+          description: successful operation response a UserDTO as data
+        "401":
+          description: Access token is missing or invalid
+      security:
+      - bearerAuth: []
+      summary: Create user
+      tags:
+      - user
+      x-content-type: application/json
+      x-accepts: application/json
+      x-tags:
+      - tag: user
+  /users/list:
+    get:
+      description: "Retrieve a list of users, authentication required."
+      operationId: retrieveAllUsers
+      responses:
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseContainerResponseDTO'
+          description: successful operation response a UserListDTO as data
+      summary: Retrieve a list of users
+      tags:
+      - user
+      x-accepts: application/json
+      x-tags:
+      - tag: user
+  /users/user/{userDni}:
+    delete:
+      description: "Delete a user, authentication required."
+      operationId: deleteUser
+      parameters:
+      - description: the user DNI
+        explode: false
+        in: path
+        name: userDni
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserDTO'
+        description: Created user object
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseContainerResponseDTO'
+          description: successful operation  response a EmptyResponseDTO as data
+        "401":
+          description: Access token is missing or invalid
+      security:
+      - bearerAuth: []
+      summary: Delete user
+      tags:
+      - user
+      x-content-type: application/json
+      x-accepts: application/json
+      x-tags:
+      - tag: user
+    get:
+      description: "Retrieve a user, authentication required."
+      operationId: retrieveUser
+      parameters:
+      - description: the user DNI
+        explode: false
+        in: path
+        name: userDni
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseContainerResponseDTO'
+          description: successful operation response a UserDTO as data
+      security:
+      - bearerAuth: []
+      summary: Retrieve a user
+      tags:
+      - user
+      x-accepts: application/json
+      x-tags:
+      - tag: user
+    put:
+      description: "Update a user, authentication required."
+      operationId: updateUser
+      parameters:
+      - description: the user dni
+        explode: false
+        in: path
+        name: userDni
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserDTO'
+        description: Updated user object
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseContainerResponseDTO'
+          description: successful operation response a UserDTO as data
+        "401":
+          description: Access token is missing or invalid
+      security:
+      - bearerAuth: []
+      summary: Update user
+      tags:
+      - user
+      x-content-type: application/json
+      x-accepts: application/json
+      x-tags:
+      - tag: user
+  /users/user/{email}:
+    get:
+      description: "Retrieve a user, authentication required."
+      operationId: retrieveUserbyEmail
+      parameters:
+      - description: the user email
+        explode: false
+        in: path
+        name: email
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseContainerResponseDTO'
+          description: successful operation response a UserDTO as data
+      summary: Retrieve a user
+      tags:
+      - user
+      x-accepts: application/json
+      x-tags:
+      - tag: user
+  /users/user/{userDni}/roles:
+    get:
+      description: "Retrieve the roles from a user, authentication required."
+      operationId: getUserRoles
+      parameters:
+      - description: the user id
+        explode: false
+        in: path
+        name: userDni
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseContainerResponseDTO'
+          description: successful operation response a UserRoleListDTO as data
+        "401":
+          description: Access token is missing or invalid
+      security:
+      - bearerAuth: []
+      summary: Retrieve the roles from a user.
+      tags:
+      - user
+      x-accepts: application/json
+      x-tags:
+      - tag: user
+  /users/user/{userDni}/role/{roleId}:
+    delete:
+      description: "Remove a role from a user, authentication required."
+      operationId: removeRoleToUser
+      parameters:
+      - description: the user id
+        explode: false
+        in: path
+        name: userDni
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      - description: the role id
+        explode: false
+        in: path
+        name: roleId
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseContainerResponseDTO'
+          description: successful operation response a EmptyResponseDTO as data
+        "401":
+          description: Access token is missing or invalid
+      security:
+      - bearerAuth: []
+      summary: Remove role from a user
+      tags:
+      - user
+      x-accepts: application/json
+      x-tags:
+      - tag: user
+    post:
+      description: "Add a role to a user, authentication required."
+      operationId: addRoleToUser
+      parameters:
+      - description: the user id
+        explode: false
+        in: path
+        name: userDni
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      - description: the role id
+        explode: false
+        in: path
+        name: roleId
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseContainerResponseDTO'
+          description: successful operation response a EmptyResponseDTO as data
+        "401":
+          description: Access token is missing or invalid
+      security:
+      - bearerAuth: []
+      summary: Add role to a user
+      tags:
+      - user
+      x-accepts: application/json
+      x-tags:
+      - tag: user
+  /users/role:
+    get:
+      description: "Retrieve a list of roles, authentication required."
+      operationId: retrieveAllRoles
+      responses:
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseContainerResponseDTO'
+          description: successful operation response a UserRoleListDTO as data
+      security:
+      - bearerAuth: []
+      summary: Retrieve a list of roles
+      tags:
+      - user
+      x-accepts: application/json
+      x-tags:
+      - tag: user
+    post:
+      description: "Create a roles, authentication required."
+      operationId: createRole
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRoleRequestDTO'
+        description: Created roles object
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseContainerResponseDTO'
+          description: successful operation response a UserRoleDTO as data
+        "401":
+          description: Access token is missing or invalid
+      security:
+      - bearerAuth: []
+      summary: Create roles
+      tags:
+      - user
+      x-content-type: application/json
+      x-accepts: application/json
+      x-tags:
+      - tag: user
+  /token/refresh:
+    patch:
+      description: "Refresh a token, authentication required."
+      operationId: refreshToken
+      parameters:
+      - description: authentication token
+        explode: false
+        in: header
+        name: Authorization
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseContainerResponseDTO'
+          description: successful operation response a JWTResponseDTO as data
+          headers:
+            Access-Token:
+              explode: false
+              schema:
+                type: string
+              style: simple
+            Refresh-Token:
+              explode: false
+              schema:
+                type: string
+              style: simple
+      security:
+      - bearerAuth: []
+      summary: refresh a token
+      tags:
+      - login
+      x-accepts: application/json
+      x-tags:
+      - tag: login
+  /token/login:
+    post:
+      description: Create a user session
+      operationId: login
+      parameters:
+      - description: the username to authenticate
+        explode: true
+        in: query
+        name: username
+        required: true
+        schema:
+          type: string
+        style: form
+      - description: the password to authenticate
+        explode: true
+        in: query
+        name: password
+        required: true
+        schema:
+          format: password
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseContainerResponseDTO'
+          description: successful operation response a JWTResponseDTO as data
+          headers:
+            Access-Token:
+              explode: false
+              schema:
+                type: string
+              style: simple
+            Refresh-Token:
+              explode: false
+              schema:
+                type: string
+              style: simple
+      summary: Create a user session
+      tags:
+      - login
+      x-accepts: application/json
+      x-tags:
+      - tag: login
+  /products/product:
+    get:
+      description: Retrieve a list of products.
+      operationId: retrieveAllProducts
+      responses:
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseContainerResponseDTO'
+          description: successful operation response a ProductListDTO as data
+      summary: Retrieve a list of products
+      tags:
+      - backoffice
+      x-accepts: application/json
+      x-tags:
+      - tag: backoffice
+    post:
+      description: "Create a product, authentication required."
+      operationId: createProduct
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductRequestDTO'
+        description: Created product object
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseContainerResponseDTO'
+          description: successful operation response a ProductDTO as data
+        "401":
+          description: Access token is missing or invalid
+      security:
+      - bearerAuth: []
+      summary: Create product
+      tags:
+      - backoffice
+      x-content-type: application/json
+      x-accepts: application/json
+      x-tags:
+      - tag: backoffice
+  /products/product/{productId}:
+    delete:
+      description: "Delete a product, authentication required."
+      operationId: deleteProduct
+      parameters:
+      - description: the product id
+        explode: false
+        in: path
+        name: productId
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseContainerResponseDTO'
+          description: successful operation response a EmptyResponseDTO as data
+        "401":
+          description: Access token is missing or invalid
+      security:
+      - bearerAuth: []
+      summary: Delete product
+      tags:
+      - backoffice
+      x-accepts: application/json
+      x-tags:
+      - tag: backoffice
+    get:
+      description: "Retrieve a product, authentication required."
+      operationId: retrieveProduct
+      parameters:
+      - description: the product id
+        explode: false
+        in: path
+        name: productId
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseContainerResponseDTO'
+          description: successful operation response a ProductDTO as data
+      security:
+      - bearerAuth: []
+      summary: Retrieve product
+      tags:
+      - backoffice
+      x-accepts: application/json
+      x-tags:
+      - tag: backoffice
+    put:
+      description: "Update a product, authentication required."
+      operationId: updateProduct
+      parameters:
+      - description: the product id
+        explode: false
+        in: path
+        name: productId
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductDTO'
+        description: Updated product object
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseContainerResponseDTO'
+          description: successful operation response a ProductDTO as data
+        "401":
+          description: Access token is missing or invalid
+      security:
+      - bearerAuth: []
+      summary: Update product
+      tags:
+      - backoffice
+      x-content-type: application/json
+      x-accepts: application/json
+      x-tags:
+      - tag: backoffice
+  /products/category:
+    get:
+      description: Retrieve a list of category.
+      operationId: retrieveAllCategory
+      responses:
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseContainerResponseDTO'
+          description: successful operation response a CategoryListDTO as data
+      summary: Retrieve a list of category
+      tags:
+      - backoffice
+      x-accepts: application/json
+      x-tags:
+      - tag: backoffice
+    post:
+      description: "Create a category, authentication required."
+      operationId: createCategory
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CategoryRequestDTO'
+        description: Created category object
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseContainerResponseDTO'
+          description: successful operation response a CategoryDTO as data
+        "401":
+          description: Access token is missing or invalid
+      security:
+      - bearerAuth: []
+      summary: Create category
+      tags:
+      - backoffice
+      x-content-type: application/json
+      x-accepts: application/json
+      x-tags:
+      - tag: backoffice
+  /products/category/{categoryId}:
+    delete:
+      description: "Delete a category, authentication required."
+      operationId: deleteCategory
+      parameters:
+      - description: the category id
+        explode: false
+        in: path
+        name: categoryId
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseContainerResponseDTO'
+          description: successful operation response a EmptyResponseDTO as data
+        "401":
+          description: Access token is missing or invalid
+      security:
+      - bearerAuth: []
+      summary: Delete category
+      tags:
+      - backoffice
+      x-accepts: application/json
+      x-tags:
+      - tag: backoffice
+    get:
+      description: "Retrieve a category, authentication required."
+      operationId: retrieveCategory
+      parameters:
+      - description: the category id
+        explode: false
+        in: path
+        name: categoryId
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseContainerResponseDTO'
+          description: successful operation response a CategoryDTO as data
+      security:
+      - bearerAuth: []
+      summary: Retrieve category
+      tags:
+      - backoffice
+      x-accepts: application/json
+      x-tags:
+      - tag: backoffice
+    put:
+      description: "Update a category, authentication required."
+      operationId: updateCategory
+      parameters:
+      - description: the category id
+        explode: false
+        in: path
+        name: categoryId
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CategoryDTO'
+        description: Updated category object
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseContainerResponseDTO'
+          description: successful operation response a CategoryDTO as data
+        "401":
+          description: Access token is missing or invalid
+      security:
+      - bearerAuth: []
+      summary: Update category
+      tags:
+      - backoffice
+      x-content-type: application/json
+      x-accepts: application/json
+      x-tags:
+      - tag: backoffice
+  /orders:
+    get:
+      description: Retrieve a list of orders
+      operationId: retrieveAllOrders
+      responses:
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseContainerResponseDTO'
+          description: successful operation response a ProductListDTO as data
+      summary: Retrieve a list of orders
+      tags:
+      - store
+      x-accepts: application/json
+      x-tags:
+      - tag: store
+    post:
+      description: "Create a order, authentication required."
+      operationId: createOrder
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderRequestDTO'
+        description: Created order object
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseContainerResponseDTO'
+          description: successful operation response a OrderDTO as data
+        "401":
+          description: Access token is missing or invalid
+      security:
+      - bearerAuth: []
+      summary: Create order
+      tags:
+      - store
+      x-content-type: application/json
+      x-accepts: application/json
+      x-tags:
+      - tag: store
+  /orders/{orderId}:
+    delete:
+      description: "Delete a order, authentication required."
+      operationId: deleteOrder
+      parameters:
+      - description: the orderId
+        explode: false
+        in: path
+        name: orderId
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseContainerResponseDTO'
+          description: successful operation response a EmptyResponseDTO as data
+        "401":
+          description: Access token is missing or invalid
+      security:
+      - bearerAuth: []
+      summary: Delete order
+      tags:
+      - store
+      x-accepts: application/json
+      x-tags:
+      - tag: store
+    get:
+      description: "Retrieve a order, authentication required."
+      operationId: retrieveCart
+      parameters:
+      - description: the orderId
+        explode: false
+        in: path
+        name: orderId
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseContainerResponseDTO'
+          description: successful operation response a CartDTO as data
+      security:
+      - bearerAuth: []
+      summary: Retrieve cart
+      tags:
+      - store
+      x-accepts: application/json
+      x-tags:
+      - tag: store
+  /orders/{orderId}/buy:
+    delete:
+      description: "Buy a order, authentication required."
+      operationId: buyOrder
+      parameters:
+      - description: the orderId
+        explode: false
+        in: path
+        name: orderId
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseContainerResponseDTO'
+          description: successful operation response a EmptyResponseDTO as data
+        "401":
+          description: Access token is missing or invalid
+      security:
+      - bearerAuth: []
+      summary: Buy order
+      tags:
+      - store
+      x-accepts: application/json
+      x-tags:
+      - tag: store
+components:
+  responses:
+    UnauthorizedError:
+      description: Access token is missing or invalid
+  schemas:
+    UserRequestDTO:
+      example:
+        firstName: Juan
+        lastName: Lopez
+        password: p4$sW0rD!
+        address: Av. Rivadavia 1000
+        dateCreated: 2023-01-01T00:00:00.000+00:00
+        dateOfBirthday: 2023-01-01T00:00:00.000+00:00
+        dni: 40000000
+        email: jlopez@email.com
+        dateDeleted: 2023-01-02T00:00:00.000+00:00
+      properties:
+        firstName:
+          example: Juan
+          type: string
+        lastName:
+          example: Lopez
+          type: string
+        dni:
+          example: 40000000
+          format: int32
+          type: integer
+        dateOfBirthday:
+          example: 2023-01-01
+          format: date
+          type: string
+        address:
+          example: Av. Rivadavia 1000
+          type: string
+        email:
+          description: this field represent the user email
+          example: jlopez@email.com
+          format: email
+          type: string
+        password:
+          example: p4$sW0rD!
+          maxLength: 16
+          minLength: 6
+          type: string
+        dateCreated:
+          example: 2023-01-01
+          format: date
+          type: string
+        dateDeleted:
+          example: 2023-01-02
+          format: date
+          type: string
+      required:
+      - address
+      - dateOfBirthday
+      - dni
+      - email
+      - firstName
+      - lastName
+      - password
+      type: object
+    UserDTO:
+      example:
+        firstName: Juan
+        lastName: Lopez
+        password: p4$sW0rD!
+        address: Av. Rivadavia 1000
+        dateCreated: 2023-01-01T00:00:00.000+00:00
+        dateOfBirthday: 2023-01-01T00:00:00.000+00:00
+        dni: 40000000
+        email: jlopez@email.com
+        dateDeleted: 2023-01-01T00:00:00.000+00:00
+      properties:
+        dni:
+          example: 40000000
+          format: int32
+          type: integer
+        firstName:
+          example: Juan
+          type: string
+        lastName:
+          example: Lopez
+          type: string
+        address:
+          example: Av. Rivadavia 1000
+          type: string
+        email:
+          description: this field represent the user email
+          example: jlopez@email.com
+          format: email
+          type: string
+        password:
+          example: p4$sW0rD!
+          maxLength: 16
+          minLength: 6
+          type: string
+        dateOfBirthday:
+          example: 2023-01-01
+          format: date
+          type: string
+        dateCreated:
+          example: 2023-01-01
+          format: date
+          type: string
+        dateDeleted:
+          example: 2023-01-01
+          format: date
+          type: string
+      required:
+      - address
+      - dateCreated
+      - dni
+      - email
+      - firstName
+      - lastName
+      - password
+      type: object
+    CartUserDTO:
+      properties:
+        dni:
+          example: 40000000
+          format: int32
+          type: integer
+        firstName:
+          example: Juan
+          type: string
+        lastName:
+          example: Lopez
+          type: string
+        address:
+          example: Av. Rivadavia 1000
+          type: string
+        email:
+          description: this field represent the user email
+          example: jlopez@email.com
+          format: email
+          type: string
+      required:
+      - address
+      - dni
+      - email
+      - firstName
+      - lastName
+      type: object
+    UserListDTO:
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/UserDTO'
+          type: array
+      type: object
+    UserRoleDTO:
+      properties:
+        email:
+          description: this field represent the user email
+          example: john@email.com
+          format: email
+          type: string
+        role:
+          example: ROLE_USER
+          type: string
+        level:
+          example: 1
+          type: integer
+        dateCreated:
+          example: 2023-02-01
+          format: date
+          type: string
+        dateDeleted:
+          example: 2023-02-01
+          format: date
+          type: string
+      required:
+      - dateCreated
+      - level
+      - role
+      type: object
+    UserRoleRequestDTO:
+      example:
+        role: ROLE_USER
+        level: 1
+      properties:
+        role:
+          example: ROLE_USER
+          type: string
+        level:
+          example: 1
+          type: integer
+      required:
+      - level
+      - role
+      type: object
+    UserRoleListDTO:
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/UserRoleDTO'
+          type: array
+      type: object
+    CategoryDTO:
+      example:
+        dateCreated: 2023-02-01T00:00:00.000+00:00
+        name: Cajas
+        parentCategoryId: 1
+        id: 8
+        dateDeleted: 2023-02-01T00:00:00.000+00:00
+      properties:
+        id:
+          example: 8
+          format: int64
+          type: integer
+        name:
+          example: Cajas
+          type: string
+        parentCategoryId:
+          example: 1
+          format: int64
+          type: integer
+        dateCreated:
+          example: 2023-02-01
+          format: date
+          type: string
+        dateDeleted:
+          example: 2023-02-01
+          format: date
+          type: string
+      required:
+      - dateCreated
+      - name
+      type: object
+    CategoryListDTO:
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/CategoryDTO'
+          type: array
+      type: object
+    CategoryRequestDTO:
+      example:
+        name: Cajas
+        parentCategoryId: 1
+      properties:
+        name:
+          example: Cajas
+          type: string
+        parentCategoryId:
+          example: 1
+          format: int64
+          type: integer
+      required:
+      - name
+      type: object
+    ProductDTO:
+      example:
+        dateCreated: 2023-01-01T00:00:00.000+00:00
+        price: 3500
+        qty: 2
+        description: Caja de te de 4 divisiones
+        id: 37
+        category:
+          dateCreated: 2023-02-01T00:00:00.000+00:00
+          name: Cajas
+          parentCategoryId: 1
+          id: 8
+          dateDeleted: 2023-02-01T00:00:00.000+00:00
+        dateDeleted: 2023-01-02T00:00:00.000+00:00
+      properties:
+        id:
+          example: 37
+          format: int64
+          type: integer
+        description:
+          example: Caja de te de 4 divisiones
+          type: string
+        price:
+          example: 3500
+          format: double
+          type: number
+        qty:
+          description: the stock quantity.
+          example: 2
+          type: integer
+        category:
+          $ref: '#/components/schemas/CategoryDTO'
+        dateCreated:
+          example: 2023-01-01
+          format: date
+          type: string
+        dateDeleted:
+          example: 2023-01-02
+          format: date
+          type: string
+      required:
+      - dateCreated
+      - name
+      - price
+      - qty
+      type: object
+    ProductRequestDTO:
+      example:
+        price: 35000
+        qty: 2
+        description: Caja de te de 4 divisiones
+        category:
+          dateCreated: 2023-02-01T00:00:00.000+00:00
+          name: Cajas
+          parentCategoryId: 1
+          id: 8
+          dateDeleted: 2023-02-01T00:00:00.000+00:00
+      properties:
+        description:
+          example: Caja de te de 4 divisiones
+          type: string
+        price:
+          example: 35000
+          format: double
+          type: number
+        qty:
+          description: the stock quantity.
+          example: 2
+          type: integer
+        category:
+          $ref: '#/components/schemas/CategoryDTO'
+      required:
+      - category
+      - name
+      - price
+      - qty
+      type: object
+    ProductListDTO:
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/ProductDTO'
+          type: array
+      type: object
+    OrderListDTO:
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/OrderDTO'
+          type: array
+      type: object
+    OrderDTO:
+      properties:
+        id:
+          example: 10
+          format: int64
+          type: integer
+        user:
+          $ref: '#/components/schemas/UserDTO'
+        orderList:
+          items:
+            $ref: '#/components/schemas/OrderDetailsDTO'
+          type: array
+        price:
+          format: double
+          type: number
+        dateCreated:
+          example: 2023-02-01
+          format: date
+          type: string
+        dateDeleted:
+          example: 2023-02-01
+          format: date
+          type: string
+      required:
+      - id
+      - price
+      - productList
+      - user
+      type: object
+    OrderRequestDTO:
+      example:
+        orderDetails:
+        - product:
+            dateCreated: 2023-01-01T00:00:00.000+00:00
+            price: 3500
+            qty: 2
+            description: Caja de te de 4 divisiones
+            id: 37
+            category:
+              dateCreated: 2023-02-01T00:00:00.000+00:00
+              name: Cajas
+              parentCategoryId: 1
+              id: 8
+              dateDeleted: 2023-02-01T00:00:00.000+00:00
+            dateDeleted: 2023-01-02T00:00:00.000+00:00
+          dateCreated: 2023-02-01T00:00:00.000+00:00
+          id: 10
+          user:
+            firstName: Juan
+            lastName: Lopez
+            password: p4$sW0rD!
+            address: Av. Rivadavia 1000
+            dateCreated: 2023-01-01T00:00:00.000+00:00
+            dateOfBirthday: 2023-01-01T00:00:00.000+00:00
+            dni: 40000000
+            email: jlopez@email.com
+            dateDeleted: 2023-01-01T00:00:00.000+00:00
+          order: null
+        - product:
+            dateCreated: 2023-01-01T00:00:00.000+00:00
+            price: 3500
+            qty: 2
+            description: Caja de te de 4 divisiones
+            id: 37
+            category:
+              dateCreated: 2023-02-01T00:00:00.000+00:00
+              name: Cajas
+              parentCategoryId: 1
+              id: 8
+              dateDeleted: 2023-02-01T00:00:00.000+00:00
+            dateDeleted: 2023-01-02T00:00:00.000+00:00
+          dateCreated: 2023-02-01T00:00:00.000+00:00
+          id: 10
+          user:
+            firstName: Juan
+            lastName: Lopez
+            password: p4$sW0rD!
+            address: Av. Rivadavia 1000
+            dateCreated: 2023-01-01T00:00:00.000+00:00
+            dateOfBirthday: 2023-01-01T00:00:00.000+00:00
+            dni: 40000000
+            email: jlopez@email.com
+            dateDeleted: 2023-01-01T00:00:00.000+00:00
+          order: null
+        id: 10
+        user:
+          firstName: Juan
+          lastName: Lopez
+          password: p4$sW0rD!
+          address: Av. Rivadavia 1000
+          dateCreated: 2023-01-01T00:00:00.000+00:00
+          dateOfBirthday: 2023-01-01T00:00:00.000+00:00
+          dni: 40000000
+          email: jlopez@email.com
+          dateDeleted: 2023-01-01T00:00:00.000+00:00
+      properties:
+        id:
+          example: 10
+          format: int64
+          type: integer
+        user:
+          $ref: '#/components/schemas/UserDTO'
+        orderDetails:
+          items:
+            $ref: '#/components/schemas/OrderDetailsDTO'
+          type: array
+      type: object
+    OrderDetailsDTO:
+      example:
+        product:
+          dateCreated: 2023-01-01T00:00:00.000+00:00
+          price: 3500
+          qty: 2
+          description: Caja de te de 4 divisiones
+          id: 37
+          category:
+            dateCreated: 2023-02-01T00:00:00.000+00:00
+            name: Cajas
+            parentCategoryId: 1
+            id: 8
+            dateDeleted: 2023-02-01T00:00:00.000+00:00
+          dateDeleted: 2023-01-02T00:00:00.000+00:00
+        dateCreated: 2023-02-01T00:00:00.000+00:00
+        id: 10
+        user:
+          firstName: Juan
+          lastName: Lopez
+          password: p4$sW0rD!
+          address: Av. Rivadavia 1000
+          dateCreated: 2023-01-01T00:00:00.000+00:00
+          dateOfBirthday: 2023-01-01T00:00:00.000+00:00
+          dni: 40000000
+          email: jlopez@email.com
+          dateDeleted: 2023-01-01T00:00:00.000+00:00
+        order: null
+      properties:
+        id:
+          example: 10
+          format: int64
+          type: integer
+        user:
+          $ref: '#/components/schemas/UserDTO'
+        product:
+          $ref: '#/components/schemas/ProductDTO'
+        order:
+          $ref: '#/components/schemas/OrderRequestDTO'
+        dateCreated:
+          example: 2023-02-01
+          format: date
+          type: string
+      type: object
+    JWTResponseDTO:
+      properties:
+        accessToken:
+          type: string
+        refreshToken:
+          type: string
+      type: object
+    EmptyResponseDTO:
+      properties:
+        date:
+          format: date-time
+          type: string
+      type: object
+    ErrorResponseDTO:
+      items:
+        $ref: '#/components/schemas/ErrorItemDTO'
+      type: array
+    ErrorItemDTO:
+      example:
+        code: code
+        link: link
+        detail: detail
+      properties:
+        code:
+          type: string
+        link:
+          type: string
+        detail:
+          type: string
+      type: object
+    MetaInformationResponseDTO:
+      example:
+        refNumber: refNumber
+        time: 0
+      properties:
+        time:
+          format: int64
+          type: integer
+        refNumber:
+          type: string
+      required:
+      - time
+      type: object
+    DataResponseDTO:
+      discriminator:
+        propertyName: type
+      example:
+        type: type
+      oneOf:
+      - $ref: '#/components/schemas/JWTResponseDTO'
+      - $ref: '#/components/schemas/ProductDTO'
+      - $ref: '#/components/schemas/UserListDTO'
+      - $ref: '#/components/schemas/UserDTO'
+      - $ref: '#/components/schemas/OrderRequestDTO'
+      - $ref: '#/components/schemas/OrderDTO'
+      - $ref: '#/components/schemas/OrderListDTO'
+      - $ref: '#/components/schemas/ProductListDTO'
+      - $ref: '#/components/schemas/UserRoleDTO'
+      - $ref: '#/components/schemas/UserRoleListDTO'
+      - $ref: '#/components/schemas/EmptyResponseDTO'
+      - $ref: '#/components/schemas/CategoryListDTO'
+      - $ref: '#/components/schemas/CategoryDTO'
+      properties:
+        type:
+          description: The type of the contained object
+          type: string
+      type: object
+      x-one-of-name: DataResponseDTO
+    ResponseContainerResponseDTO:
+      example:
+        data:
+          type: type
+        meta:
+          refNumber: refNumber
+          time: 0
+        errors:
+        - code: code
+          link: link
+          detail: detail
+        - code: code
+          link: link
+          detail: detail
+      properties:
+        errors:
+          items:
+            $ref: '#/components/schemas/ErrorItemDTO'
+          type: array
+        meta:
+          $ref: '#/components/schemas/MetaInformationResponseDTO'
+        data:
+          $ref: '#/components/schemas/DataResponseDTO'
+      required:
+      - meta
+      - type
+      type: object
+  securitySchemes:
+    bearerAuth:
+      bearerFormat: JWT
+      scheme: bearer
+      type: http

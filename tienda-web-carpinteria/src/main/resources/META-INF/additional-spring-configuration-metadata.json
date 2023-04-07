@@ -1,0 +1,52 @@
+{"properties": [
+  {
+    "name": "api.basePath",
+    "type": "java.lang.String",
+    "description": "A description for 'api.basePath'"
+  },
+  {
+    "name": "api.refreshTokenPath",
+    "type": "java.lang.String",
+    "description": "A description for 'api.refreshTokenPath'"
+  },
+  {
+    "name": "api.refreshTokenPath",
+    "type": "java.lang.String",
+    "description": "A description for 'api.refreshTokenPath'"
+  },
+  {
+    "name": "jwt.secret",
+    "type": "java.lang.String",
+    "description": "A description for 'jwt.secret'"
+  },
+  {
+    "name": "api.defaultuser.password",
+    "type": "java.lang.String",
+    "description": "A description for 'api.defaultuser.password'"
+  },
+  {
+    "name": "api.defaultuser.lastName",
+    "type": "java.lang.String",
+    "description": "A description for 'api.defaultuser.lastName'"
+  },
+  {
+    "name": "api.defaultuser.email",
+    "type": "java.lang.String",
+    "description": "A description for 'api.defaultuser.email'"
+  },
+  {
+    "name": "api.defaultuser.email",
+    "type": "java.lang.String",
+    "description": "A description for 'api.defaultuser.email'"
+  },
+  {
+    "name": "api.defaultuser.address",
+    "type": "java.lang.String",
+    "description": "A description for 'api.defaultuser.address'"
+  },
+  {
+    "name": "api.defaultuser.dob",
+    "type": "java.lang.String",
+    "description": "A description for 'api.defaultuser.dob'"
+  }
+]}
